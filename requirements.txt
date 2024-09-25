@@ -1,0 +1,4 @@
+dataset
+langchain
+langchain-community
+chromadb

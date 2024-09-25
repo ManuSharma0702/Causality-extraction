@@ -1,0 +1,10 @@
+/lib
+/__pycache__
+/model-best
+/venv
+dataprocess_utils_copy.py
+query_copy.py
+net.html
+test2.py
+/BioRED
+/chroma

@@ -1,9 +1,5 @@
-{  
-    "Relations": [
-        {
-            "Entity1": "",
-            "Entity2": "",
-            "Relation": ""
-        }
-    ]
+{
+    "Entity1": "",
+    "Entity2": "",
+    "Relation": ""
 }

@@ -55,12 +55,12 @@ def graph_creation(json_data):
     G = nx.DiGraph()
 
     # Add nodes and edges with relations
-    for relation in json_data["Relations"]:
-        entity1 = relation["Entity1"]
-        entity2 = relation["Entity2"]
-        relation_type = relation["Relation"]
-        
-        G.add_edge(entity1, entity2, label=relation_type)
+    print(json_data)
+    entity1 = json_data["Entity1"]
+    entity2 = json_data["Entity2"]
+    relation_type = json_data["Relation"]
+    
+    G.add_edge(entity1, entity2, label=relation_type)
 
     # Draw the graph
     pos = nx.spring_layout(G)  # Positioning of nodes
@@ -76,3 +76,27 @@ def graph_creation(json_data):
     net.from_nx(G)												# The G is defined in Step 1.
     net.show('net.html', notebook=False)
 
+def graph_creation_for_chemprot(output_for_graph):
+    G = nx.DiGraph()
+
+    # Add nodes and edges with relations
+    for json_data, correct_label in output_for_graph:
+      print(json_data, correct_label)
+      entity1 = json_data["Entity1"]
+      entity2 = json_data["Entity2"]
+      relation_type = json_data["Relation"]
+      G.add_edge(entity1, entity2, label=relation_type)
+      nx.set_edge_attributes(G, {(entity1, entity2): {'Actual relation': correct_label}})
+    # Draw the graph
+    pos = nx.spring_layout(G)  # Positioning of nodes
+
+    plt.figure(figsize=(10, 7))
+    nx.draw(G, pos, with_labels=True, node_color="skyblue", node_size=3000, font_size=5, font_weight="bold", arrows=True)
+
+    # Draw edge labels (relations)
+    edge_labels = nx.get_edge_attributes(G, 'label')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red', font_size=5)
+
+    net = Network('900px', '900px')
+    net.from_nx(G)												# The G is defined in Step 1.
+    net.show('net.html', notebook=False)

@@ -43,6 +43,16 @@ def creating_sample(document) -> list:
   
   return training_sample
 
+def creating_sample_for_chemprot(element):
+  import re
+  element = json.loads(element)
+  extracted_double_angle_brackets = re.findall(r'<<\s*(.*?)\s*>>', element['text'])
+  extracted_double_square_brackets = re.findall(r'\[\[\s*(.*?)\s*]]', element['text'])
+  
+  element["entities"] = [extracted_double_angle_brackets[0], extracted_double_square_brackets[0]]
+  return element
+
+
 def creating_readable_chunks(all_train_documents_information, all_test_documents_information, all_val_documents_information):
   training_data = []
   
@@ -50,7 +60,7 @@ def creating_readable_chunks(all_train_documents_information, all_test_documents
 
     training_sample = creating_sample(document)
     training_data += training_sample
- 
+
   test_data = []
   for document in all_test_documents_information:
     test_sample = creating_sample(document)
@@ -83,3 +93,25 @@ def creating_readable_chunks(all_train_documents_information, all_test_documents
 # all_val_documents_information = val_data_j["documents"]
 
 # creating_readable_chunks(all_train_documents_information,all_test_documents_information,all_val_documents_information)
+
+
+def creating_readable_chunks_for_chemprot(all_train_documents_information, all_test_documents_information, all_val_documents_information):
+  training_data = []
+  
+  for element in all_train_documents_information:
+
+    training_sample = creating_sample_for_chemprot(element)
+    
+    training_data.append(training_sample)
+ 
+  test_data = []
+  for element in all_test_documents_information:
+    test_sample = creating_sample_for_chemprot(element)
+    test_data.append(test_sample)
+
+  val_data = []
+  for element in all_val_documents_information:
+    val_sample = creating_sample_for_chemprot(element)
+    val_data.append(val_sample)
+
+  return training_data, test_data, val_data

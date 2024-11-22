@@ -2,7 +2,7 @@ import pandas as pd
 import json
 import re
 # Read the text file
-with open("test.txt", "r", encoding='UTF-8') as file:
+with open("dev.txt", "r", encoding='UTF-8') as file:
     lines = file.readlines()
 
 # Parse each line as JSON and store data
@@ -20,4 +20,4 @@ for line in lines:
 df = pd.DataFrame(data)
 
 # Save to CSV
-df.to_csv("test.csv", index=False)
+df.to_csv("dev.csv", index=False)

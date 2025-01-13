@@ -90,7 +90,7 @@ model = Ollama(model="llama3relations")
 output_for_graph = []
 
 
-for i in range(70, 90):
+for i in range(1):
     text = test_data[i]["text"]
     correct_label = test_data[i]['label']
     list_of_entities = [f"{ent}" for ent in test_data[i]["entities"]]
@@ -138,11 +138,49 @@ for i in range(70, 90):
     '''
 
     # Invoke the model
-    response_text = model.invoke(prompt)
-    # print(response_text)
+    import subprocess
+    import json
+    import base64
 
-    # print(correct_label)
-    output_for_graph.append([response_text, correct_label, list_of_entities])
+
+    # Directory containing images
+
+
+
+    
+       
+    payload = {
+        "model": "llama3relations",
+        "prompt": prompt, 
+        "stream":False,
+    }
+    payload = json.dumps(payload)
+
+    curl_command = [
+        "curl",
+        "-X", "POST",
+        "https://f821-106-219-164-23.ngrok-free.app",
+        "-H", "Content-Type: application/json",
+        "-H", "Authorization: Bearer 2grprGQmjfc77BdX0x5S0wJX8Z8_492i6XzDYLQmCWwEYe14g",
+        "-d", payload
+    ]
+
+    # Run the curl command and capture the output
+    result = subprocess.run(curl_command, capture_output=True, text=True)
+    
+    output = result.stdout
+
+    print(output)
+  
+
+
+    # response_text = model.invoke(prompt)
+
+    output = json.loads(output)
+    print(output["response"])
+    predicted_label = output["response"]
+    print(correct_label)
+    output_for_graph.append([predicted_label, correct_label, list_of_entities])
 
 graph_creation_for_chemprot(output_for_graph)
 
